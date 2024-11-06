@@ -7,10 +7,8 @@ CREATE TABLE Productos (
     precio DECIMAL(10, 2) NOT NULL,
     stock INT NOT NULL,
     descripcion TEXT,
-    imagen_url VARCHAR(255)
 );
 CREATE TABLE Inventario (
-    id_inventario INT PRIMARY KEY AUTO_INCREMENT,
     id_producto INT NOT NULL,
     fecha DATE NOT NULL,
     cantidad_agregada INT NOT NULL,

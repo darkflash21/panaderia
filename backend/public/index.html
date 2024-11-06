@@ -15,30 +15,32 @@
   <main class="content">
     <section class="highlight">
       <h2>Destacados de Temporada</h2>
-      <div class="highlight-images">
-        <div class="image-container">
-          <img src="1.webp" alt="Pan de Muerto">
-          <p>Pan de Muerto</p>
+      <div class="carousel">
+        <div class="carousel-images">
+          <div class="image-container">
+            <img src="1.webp" alt="Pan de Muerto" class="carousel-slide active" >
+          </div>
+          <div class="image-container">
+            <img src="2.jfif" alt="Pan de Halloween" class="carousel-slide">
+            
+          </div>
+          <div class="image-container">
+            <img src="3.jpg" alt="Pan de Noviembre" class="carousel-slide">
+            
+          </div>
+          <div class="image-container">
+            <img src="4.jfif" alt="Pan de Navidad" class="carousel-slide">
+            
+          </div>
+          <div class="image-container">
+            <img src="5.jpg" alt="Pan de Reyes" class="carousel-slide">
+          </div>
         </div>
-        <div class="image-container">
-          <img src="2.jfif" alt="Pan de Halloween">
-          <p>Pastel de Halloween</p>
-        </div>
-        <div class="image-container">
-          <img src="3.jpg" alt="Pan de Noviembre">
-          <p>Concha demoniaca</p>
-        </div>
-        <div class="image-container">
-          <img src="4.jfif" alt="Pan de Navidad">
-          <p>Pan de calabaza</p>
-        </div>
-        <div class="image-container">
-          <img src="5.jpg" alt="Pan de Reyes">
-          <p>Pan de jacks</p>
-        </div>
+        <button class="carousel-button prev" onclick="changeSlide(-1)">❮</button>
+        <button class="carousel-button next" onclick="changeSlide(1)">❯</button>
       </div>
     </section>
-
+    
     <section class="inventory">
       <h2>Inventario de Panadería</h2>
       <table class="inventory-table">
@@ -58,8 +60,7 @@
             <td>$15.00</td>
             <td>30</td>
             <td>
-              <button class="btn edit-btn" onclick="openModal()">Editar</button>
-              <button class="btn delete-btn">Eliminar</button>
+              <button class="btn create-btn" onclick="openModal()">Agregar un nuevo producto</button>
             </td>
           </tr>
         </tbody>
@@ -78,7 +79,8 @@
         <label for="productCategory">Categoría:</label>
         <select id="productCategory" name="category">
           <option value="Día de Muertos">Día de Muertos</option>
-          <option value="Halloween">Halloween</option>
+          <option value="Halloween">Especial</option>
+          <option value="Halloween">Temporada</option>
         </select>
         <label for="productPrice">Precio:</label>
         <input type="number" id="productPrice" name="price" required min="0" step="0.01">
