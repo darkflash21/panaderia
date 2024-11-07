@@ -1,3 +1,4 @@
+/* Global styles */
 * {
   margin: 0;
   padding: 0;
@@ -24,7 +25,31 @@ body {
   font-style: italic;
 }
 
-/* Inventario */
+/* Destacados de Temporada */
+.highlight {
+  text-align: center;
+  margin: 2rem auto;
+}
+.highlight h2 {
+  color: #a88c59;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+.image-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.highlight-image {
+  width: 80%;
+  max-width: 200px;
+  max-height: 150px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Inventory Table */
 .inventory {
   margin: 2rem auto;
   padding: 1rem;
@@ -52,6 +77,19 @@ body {
 }
 .inventory-table td {
   background: #fff;
+}
+
+/* Image container within the table */
+.image-container {
+  width: 80px; /* Contenedor de la imagen */
+  height: 80px;
+  overflow: hidden;
+  border-radius: 8px;
+}
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Asegura que la imagen llene el contenedor sin deformarse */
 }
 
 /* Modal */
@@ -88,13 +126,31 @@ body {
   display: block;
 }
 #productForm input,
-#productForm select {
+#productForm select,
+#productForm textarea {
   width: 100%;
   padding: 8px;
   margin-top: 5px;
   border-radius: 4px;
   border: 1px solid #ccc;
 }
+#productForm textarea {
+  resize: vertical;
+}
+
+/* Estilo para input de archivo */
+#productImage {
+  padding: 8px;
+  font-size: 1rem;
+  border: 2px dashed #a88c59;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+#productImage:hover {
+  background-color: #f4ede6;
+}
+
 .save-btn {
   display: block;
   width: 100%;
@@ -107,68 +163,7 @@ body {
   cursor: pointer;
 }
 
-.carousel {
-  position: relative;
-  width: 80%;
-  max-width: 600px;
-  height: 300px;
-  margin: auto;
-  overflow: hidden;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.carousel-images {
-  display: flex;
-  transition: transform 0.5s ease-in-out;
-}
-
-.carousel-slide {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.carousel-slide img {
-  width: 100%;
-  height: 70%; /* Ajusta la altura de la imagen */
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.carousel-slide p {
-  margin: 0;
-  padding: 10px;
-  font-size: 1em;
-  color: #333;
-  background: rgba(255, 255, 255, 0.8); /* Fondo semitransparente para el texto */
-  width: 100%;
-}
-
-
-.carousel-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
-  color: #fff;
-  border: none;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  font-size: 1.5rem;
-}
-.prev {
-  left: 0;
-}
-.next {
-  right: 0;
-}
-
-/* Botón "Agregar un nuevo producto" */
+/* Buttons */
 .create-btn {
   display: inline-block;
   background-color: #5a9bd5;
@@ -181,16 +176,21 @@ body {
   border-radius: 5px;
   cursor: pointer;
 }
-
+.edit-btn,
 .delete-btn {
   display: inline-block;
-  background-color: red;
-  color: #fff;
   padding: 0.5rem 1.5rem;
-  margin: 1rem auto;
   font-weight: bold;
   font-size: 1rem;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+.edit-btn {
+  background-color: #5a9bd5;
+  color: #fff;
+}
+.delete-btn {
+  background-color: red;
+  color: #fff;
 }

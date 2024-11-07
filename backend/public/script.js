@@ -1,112 +1,77 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("productModal");
   const productForm = document.getElementById("productForm");
   const inventoryTable = document.querySelector(".inventory-table tbody");
-  const slides = document.querySelectorAll('.carousel-slide');
-  const carouselImages = document.querySelector('.carousel-images');
-  
-  let currentProductRow = null;
-  let currentSlideIndex = 0;
+  let editingRow = null;
 
-  // Función para cambiar de slide
-  function changeSlide(direction) {
-    // Remover la clase 'active' de la imagen actual
-    slides[currentSlideIndex].classList.remove('active');
+  productForm.addEventListener("submit", (e) => {
+    e.preventDefault();
 
-    // Actualizar el índice de la imagen actual
-    currentSlideIndex = (currentSlideIndex + direction + slides.length) % slides.length;
-
-    // Agregar la clase 'active' a la nueva imagen
-    slides[currentSlideIndex].classList.add('active');
-
-    // Mover el contenedor de las imágenes a la posición de la imagen actual
-    carouselImages.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
-  }
-
-  // Inicializar el primer slide como activo
-  if (slides.length > 0) {
-    slides[0].classList.add('active');
-  }
-
-  // Asignar la función a los botones de control del carrusel
-  document.querySelector('.prev').onclick = () => changeSlide(-1);
-  document.querySelector('.next').onclick = () => changeSlide(1);
-
-  // Abrir Modal de Edición
-  window.openModal = (row) => {
-    if (row) {
-      currentProductRow = row;
-      const [name, category, price, quantity] = row.children;
-      
-      document.getElementById("productName").value = name.textContent;
-      document.getElementById("productCategory").value = category.textContent;
-      document.getElementById("productPrice").value = parseFloat(price.textContent.replace('$', ''));
-      document.getElementById("productQuantity").value = quantity.textContent;
-    }
-    modal.style.display = "block";
-  };
-
-  // Cerrar Modal de Edición
-  window.closeModal = () => {
-    modal.style.display = "none";
-    productForm.reset();
-    currentProductRow = null;
-  };
-
-  // Guardar Cambios en el Producto
-  productForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    const updatedProduct = {
+    const product = {
       name: document.getElementById("productName").value,
       category: document.getElementById("productCategory").value,
       price: parseFloat(document.getElementById("productPrice").value).toFixed(2),
-      quantity: document.getElementById("productQuantity").value,
+      quantity: parseInt(document.getElementById("productQuantity").value, 10),
+      description: document.getElementById("productDescription").value,
+      image: document.getElementById("productImage").files[0] ? URL.createObjectURL(document.getElementById("productImage").files[0]) : null
     };
 
-    if (currentProductRow) {
-      updateProductRow(currentProductRow, updatedProduct);
+    if (editingRow) {
+      updateProductRow(editingRow, product);
+      editingRow = null;
     } else {
-      addProductRow(updatedProduct);
+      addProductRow(product);
     }
+
     closeModal();
+    productForm.reset();
   });
 
-  // Actualizar Fila de Producto Existente
-  function updateProductRow(row, product) {
-    row.children[0].textContent = product.name;
-    row.children[1].textContent = product.category;
-    row.children[2].textContent = `$${product.price}`;
-    row.children[3].textContent = product.quantity;
-  }
-
-  // Agregar una Nueva Fila de Producto
   function addProductRow(product) {
-    const newRow = document.createElement("tr");
-
-    newRow.innerHTML = `
+    const row = document.createElement("tr");
+    row.innerHTML = `
       <td>${product.name}</td>
       <td>${product.category}</td>
       <td>$${product.price}</td>
       <td>${product.quantity}</td>
+      <td>${product.description}</td>
+      <td>${product.image ? `<img src="${product.image}" alt="${product.name}" class="product-image">` : 'Sin imagen'}</td>
       <td>
-        <button class="btn create-btn" onclick="openModal(this.parentElement.parentElement)">Agregar nuevo producto</button>
-        <button class="btn delete-btn" onclick="deleteProductRow(this.parentElement.parentElement)">Eliminar</button>
-      </td>
-    `;
-
-    inventoryTable.appendChild(newRow);
+        <button class="edit-btn" onclick="openModal(this.parentElement.parentElement)">Editar</button>
+        <button class="delete-btn" onclick="deleteProductRow(this.parentElement.parentElement)">Eliminar</button>
+      </td>`;
+    inventoryTable.appendChild(row);
   }
 
-  // Eliminar Fila de Producto
+  function updateProductRow(row, product) {
+    const [name, category, price, quantity, description, imageCell] = row.children;
+    name.textContent = product.name;
+    category.textContent = product.category;
+    price.textContent = `$${product.price}`;
+    quantity.textContent = product.quantity;
+    description.textContent = product.description;
+    imageCell.innerHTML = product.image ? `<img src="${product.image}" alt="${product.name}" class="product-image">` : 'Sin imagen';
+  }
+
   window.deleteProductRow = (row) => {
-    if (confirm("¿Estás seguro de que deseas eliminar este producto?")) {
-      row.remove();
-    }
+    row.remove();
   };
 
-  // Cerrar el modal al hacer clic fuera de la ventana
-  window.onclick = (event) => {
-    if (event.target === modal) closeModal();
+  window.openModal = (row = null) => {
+    editingRow = row;
+    if (row) {
+      const [name, category, price, quantity, description] = row.children;
+      document.getElementById("productName").value = name.textContent;
+      document.getElementById("productCategory").value = category.textContent;
+      document.getElementById("productPrice").value = price.textContent.replace('$', '');
+      document.getElementById("productQuantity").value = quantity.textContent;
+      document.getElementById("productDescription").value = description.textContent;
+      document.getElementById("productImage").value = ''; // Reset file input
+    }
+    document.getElementById("productModal").style.display = "block";
+  };
+
+  window.closeModal = () => {
+    document.getElementById("productModal").style.display = "none";
+    productForm.reset();
   };
 });
